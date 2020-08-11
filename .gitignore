@@ -1,0 +1,5 @@
+dist
+.idea
+*.iml
+*.pyc
+wafcli.egg-info
