@@ -97,12 +97,13 @@ class CustomRules(Waf):
         :param to_domains:
         :return:
         """
-        resp = self.send_request("CopyCustomRule", {
+        params = {
             "Edition": self.edition,
             "From": from_domain,
             "RuleName": rule_name,
             "Domains": to_domains
-        })
+        }
+        resp = self.send_request("CopyCustomRule", params)
         self.print_resp(resp)
 
 
@@ -138,4 +139,8 @@ class Pipeline(object):
 
 
 def exec():
+    fire.Fire(Pipeline)
+
+
+if __name__ == '__main__':
     fire.Fire(Pipeline)

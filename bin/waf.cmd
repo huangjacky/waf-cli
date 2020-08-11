@@ -35,12 +35,12 @@ goto :EOF
 
 #!/usr/bin/env python
 
-import wafcli.waf
+from wafcli.waf import exec
 import sys
 
 
 def main():
-    return wafcli.waf.exec()
+    return exec()
 
 
 if __name__ == '__main__':
