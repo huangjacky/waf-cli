@@ -108,16 +108,80 @@ class CustomRules(Waf):
 
 
 class IP(Waf):
-    def add(self, domain, ips):
+    def add(self, domain: str, ips: str):
         resp = self.send_request("UpsertIpAccessControl", {
             "Domain": domain,
-            "Items": ips,
+            "Items": ips.split(','),
             "Edition": self.edition
         })
         self.print_resp(resp)
 
-    def list(self):
-        pass
+    def list(
+            self, domain: str, count: int, action=None, vtsmin=None, vtsmax=None,
+            ctsmin=None, ctsmax=None, offset=0, limit=10, source=None, sort=None, ip=None
+    ):
+        params = {
+            "Domain": domain,
+            "Count": count
+        }
+        if action is not None:
+            params["ActionType"] = action
+        if vtsmin is not None:
+            params["VtsMin"] = vtsmin
+        if vtsmax is not None:
+            params["VtsMax"] = vtsmax
+        if ctsmin is not None:
+            params["CtsMin"] = ctsmin
+        if ctsmax is not None:
+            params["CtsMax"] = ctsmax
+        if offset is not None:
+            params["OffSet"] = offset
+        if limit is not None:
+            params["Limit"] = limit
+        if source is not None:
+            params["Source"] = source
+        if sort is not None:
+            params["Sort"] = sort
+        if ip is not None:
+            params["Ip"] = ip
+        self.print_resp(self.send_request("DescribeIpAccessControl", params))
+
+    def delete(self, domain: str, ips: str):
+        params = {
+            "Domain": domain,
+            "Items": ips.split(',')
+        }
+        print(params)
+        self.print_resp(self.send_request("DeleteIpAccessControl", params))
+
+    def hits(
+            self, domain: str, count: int, category: str, vtsmin=None, vtsmax=None,
+            ctsmin=None, ctsmax=None, offset=0, limit=10, name=None, sort=None, ip=None
+    ):
+        params = {
+            "Domain": domain,
+            "Count": count,
+            "Category": category
+        }
+        if vtsmin is not None:
+            params["VtsMin"] = vtsmin
+        if vtsmax is not None:
+            params["VtsMax"] = vtsmax
+        if ctsmin is not None:
+            params["CtsMin"] = ctsmin
+        if ctsmax is not None:
+            params["CtsMax"] = ctsmax
+        if offset is not None:
+            params["Skip"] = offset
+        if limit is not None:
+            params["Limit"] = limit
+        if name is not None:
+            params["Name"] = name
+        if sort is not None:
+            params["Sort"] = sort
+        if ip is not None:
+            params["Ip"] = ip
+        self.print_resp(self.send_request("DescribeIpHitItems", params))
 
 
 class Pipeline(object):
