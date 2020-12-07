@@ -184,6 +184,24 @@ class IP(Waf):
         self.print_resp(self.send_request("DescribeIpHitItems", params))
 
 
+class Log(Waf):
+    def __init__(self, secret_id='', secret_key='', region='', edition=''):
+        super().__init__(secret_id, secret_key, region, edition)
+
+    def cursor(self, from_time: str):
+        params = {
+            "FromTime": from_time
+        }
+        self.print_resp(self.send_request("DescribeAccessCursor", params))
+
+    def export(self, cursor: str, limit: int = 1000):
+        params = {
+            "Cursor": cursor,
+            "Limit": limit
+        }
+        self.print_resp(self.send_request("ExportAccessLogs", params))
+
+
 class Pipeline(object):
     def __init__(self, secret_id='', secret_key='', region='', edition=''):
         if secret_id == "" or secret_key == "":
@@ -200,6 +218,7 @@ class Pipeline(object):
         self.domain = Domains(secret_id, secret_key, region, edition)
         self.custom_rule = CustomRules(secret_id, secret_key, region, edition)
         self.ip = IP(secret_id, secret_key, region, edition)
+        self.log = Log(secret_id, secret_key, region, edition)
 
 
 def exec():
