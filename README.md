@@ -55,3 +55,16 @@ waf ip add www.test.com 3.3.3.3
 #### list
 #### delete
 #### hits
+
+### log
+#### cursor
+get cursor by from time
+```bash
+waf log cursor "2020-12-07 00:00:00"
+```
+
+#### export
+export logs from cursor
+```bash
+waf log export 5FCDE1000005B5DB3A29F2EE000000000000 1000
+```
