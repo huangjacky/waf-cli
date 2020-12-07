@@ -1,6 +1,7 @@
 import fire
 import os
 import json
+from wafcli import __version__
 from tencentcloud.common import credential, abstract_client
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 
@@ -26,6 +27,10 @@ class WafClient(abstract_client.AbstractClient):
             else:
                 raise TencentCloudSDKException(e.message, e.message)
 
+    @classmethod
+    def version(cls):
+        return cls._apiVersion
+
 
 class Waf(object):
     def __init__(self, secret_id='', secret_key='', region='', edition=''):
@@ -42,6 +47,15 @@ class Waf(object):
 
     def print_resp(self, resp):
         print(json.dumps(resp, indent="\t"))
+
+
+class Version(Waf):
+    def __init__(self, secret_id='', secret_key='', region='', edition=''):
+        super().__init__(secret_id, secret_key, region, edition)
+        self.print_resp({
+            "cli": __version__,
+            "waf": WafClient.version()
+        })
 
 
 class Domains(Waf):
@@ -231,6 +245,7 @@ class Pipeline(object):
         self.custom_rule = CustomRules(secret_id, secret_key, region, edition)
         self.ip = IP(secret_id, secret_key, region, edition)
         self.log = Log(secret_id, secret_key, region, edition)
+        self.version = Version(secret_id, secret_key, region, edition)
 
 
 def exec():

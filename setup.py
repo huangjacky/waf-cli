@@ -5,8 +5,6 @@ import re
 import sys
 
 from setuptools import setup, find_packages
-
-
 here = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -33,7 +31,8 @@ setup_options = dict(
     name='wafcli',
     version=find_version("wafcli", "__init__.py"),
     description='腾讯T-Sec Web应用防火墙命令行工具',
-    long_description=read('README.md'),
+    long_description="https://github.com/huangjacky/waf-cli",
+    long_description_content_type="text/markdown",
     author='HuangJacky',
     maintainer_email="HuangJacky@163.com",
     url='https://cloud.tencent.com/product/waf',
