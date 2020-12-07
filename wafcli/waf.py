@@ -35,6 +35,7 @@ class Waf(object):
         self.edition = edition
 
     def send_request(self, api, params):
+        # params["Edition"] = self.edition
         cred = credential.Credential(self.secret_id, self.secret_key)
         client = WafClient(cred, self.region)
         return client.api(api, params)
@@ -189,12 +190,23 @@ class Log(Waf):
         super().__init__(secret_id, secret_key, region, edition)
 
     def cursor(self, from_time: str):
+        """
+        获取对应时间的游标
+        :param from_time:
+        :return:
+        """
         params = {
             "FromTime": from_time
         }
         self.print_resp(self.send_request("DescribeAccessCursor", params))
 
     def export(self, cursor: str, limit: int = 1000):
+        """
+        导出日志
+        :param cursor:
+        :param limit:
+        :return:
+        """
         params = {
             "Cursor": cursor,
             "Limit": limit
