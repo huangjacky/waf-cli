@@ -110,16 +110,17 @@ class CustomRules(Waf):
 
 
 class IP(Waf):
-    def add(self, domain: str, ips: str, valid_ts=3600, source="custom", action=42):
+    def add(self, domain: str, ips: str, valid_ts=3600, source="custom", action=42, note='wafcli'):
         ret = []
         now = int(time.time())
         for ip in ips.split(','):
-            ret.append({
+            ret.append(json.dumps({
                 "ip": ip,
                 "source": source,
                 "action": action,
-                "valid_ts": now+valid_ts
-            })
+                "valid_ts": now+valid_ts,
+                "note": note
+            }))
         resp = self.send_request("UpsertIpAccessControl", {
             "Domain": domain,
             "Items": ret,
