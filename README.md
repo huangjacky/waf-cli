@@ -49,11 +49,15 @@ waf custom_rule copy example.com rule2 all
 ### ip
 #### add
 ```bash
-waf ip add global 2.2.2.2,1.1.1.1 --action 42
+waf ip add global 2.2.2.2,1.1.1.1 --action 42 --note hvv
 waf ip add www.test.com 3.3.3.3
 ```
 #### list
 #### delete
+```bash
+waf ip delete global 2.2.2.2,1.1.1.1
+waf ip delete www.test.com 3.3.3.3
+```
 #### hits
 
 ### log
