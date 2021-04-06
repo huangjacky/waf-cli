@@ -1,6 +1,7 @@
 import fire
 import os
 import json
+import time
 from tencentcloud.common import credential, abstract_client
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 
@@ -109,10 +110,19 @@ class CustomRules(Waf):
 
 
 class IP(Waf):
-    def add(self, domain: str, ips: str):
+    def add(self, domain: str, ips: str, valid_ts=3600, source="custom", action=42):
+        ret = []
+        now = int(time.time())
+        for ip in ips.split(','):
+            ret.append({
+                "ip": ip,
+                "source": source,
+                "action": action,
+                "valid_ts": now+valid_ts
+            })
         resp = self.send_request("UpsertIpAccessControl", {
             "Domain": domain,
-            "Items": ips.split(','),
+            "Items": ret,
             "Edition": self.edition
         })
         self.print_resp(resp)
